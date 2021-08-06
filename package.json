@@ -4,7 +4,9 @@
   "description": "A session manager middleware for express.js with AES encription.",
   "main": "./dist/index.js",
   "scripts": {
-    "test": "cls & mocha --require ts-node/register ./src/**/*.test.ts"
+    "test": "cls & mocha --require ts-node/register ./src/**/*.test.ts",
+    "start": "ts-node ./src/test.ts",
+    "prepare": "tsc"
   },
   "keywords": [
     "session",
@@ -17,6 +19,9 @@
     "middleware",
     "typescript",
     "sus"
+  ],
+  "files": [
+    "dist"
   ],
   "author": "sleep-written",
   "license": "MIT",

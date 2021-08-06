@@ -7,7 +7,7 @@ This is a package to manage sessions stored in __encrypted__ files using __UUIDv
 
 - First install this package in your project:
 ```console
-foo@bar:~$ npm install --save suspicious-session
+npm install --save suspicious-session
 ```
 
 - Then create a new `express();` instance, and use the middleware as follows:
