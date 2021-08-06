@@ -1,0 +1,8 @@
+# Archivos de Desarrollo
+node_modules
+
+# Carpeta de compilados
+dist
+
+# Carpeta de sesiones
+data
