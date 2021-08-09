@@ -15,7 +15,7 @@ export interface Options {
     name?: string;
 
     /**
-     * The lifetime duration (in milliseconds) of every session created. By default it's setted to
+     * The lifetime duration (in minutes) of every session created. By default it's setted to
      * 30 mins of duration.
      */
     maxAge?: number;

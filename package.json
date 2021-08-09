@@ -1,6 +1,6 @@
 {
   "name": "suspicious-session",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A session manager middleware for express.js with AES encription.",
   "main": "./dist/index.js",
   "scripts": {

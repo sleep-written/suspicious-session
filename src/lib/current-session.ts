@@ -35,7 +35,12 @@ export class CurrentSession<T = any> implements Current<T> {
     ) {
         this._aes = aes;
         this._uuid = uuid;
-        this._maxAge = options.maxAge ?? 30000;
+
+        if (options.maxAge) {
+            this._maxAge = options.maxAge;
+        } else {
+            this._maxAge = 60000 * 30;
+        }
         
         this._path = resolve(options.path, `${uuid}.sus`);
         this._clock = setTimeout(this.destroy.bind(this), options.maxAge);

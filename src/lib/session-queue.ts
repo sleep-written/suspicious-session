@@ -16,7 +16,7 @@ export class SessionQueue {
     
     constructor(options: Options) {
         // Set default values
-        this._options = options;
+        this._options = { ...options };
         this._options.path = resolve(this._options.path);
         if (!this._options.name) {
             this._options.name = 'session-id';
@@ -25,7 +25,13 @@ export class SessionQueue {
             this._options.algorithm = 'aes-128-ccm';
         }
 
-        this._aes = new AESCrypto(options.algorithm);
+        if (this._options.maxAge) {
+            this._options.maxAge = 60000 * this._options.maxAge;
+        } else {
+            this._options.maxAge = 60000 * 30;
+        }
+
+        this._aes = new AESCrypto(this._options.algorithm);
         this._aes.generateKey();
         this._memory = {};
     }

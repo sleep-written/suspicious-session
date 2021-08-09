@@ -8,7 +8,7 @@ import { assert } from 'chai';
 
 describe('Testing "./lib/session-queue"', () => {
     const options: Options = {
-        maxAge: 500,
+        maxAge: (1 / 60000) * 500,
         path: resolve('./data')
     };
 

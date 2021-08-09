@@ -12,7 +12,7 @@ app.use(json({
 app.use(suspiciousSession({
     name: 'i-see-you',
     path: './data',
-    maxAge: 15000,
+    maxAge: 1 / 2,
     algorithm: 'aes-256-ccm',
 }));
 
