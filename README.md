@@ -1,6 +1,6 @@
 # Suspicious Session
 
-This is a package to manage sessions stored in __encrypted__ files using __UUIDv4__ for client identification for [Express.js](https://expressjs.com/). This package it's a newer version writted from zero based of [session-crossover](https://www.npmjs.com/package/session-crossover) package _(now deprecated)._ This package is developed with [typescript](https://www.typescriptlang.org/) and contains all required `*.d.ts` definitions inside it.
+This is a package to manage sessions stored in __encrypted__ files (with AES), using __UUIDv4__ for client identification for [Express.js](https://expressjs.com/). This package it's a newer version writted from zero based of [session-crossover](https://www.npmjs.com/package/session-crossover) package _(now deprecated)._ This package is developed with [typescript](https://www.typescriptlang.org/) and contains all required `*.d.ts` definitions inside it.
 
 
 ## Implementation
@@ -22,7 +22,7 @@ const app = express();
 app.use(suspiciousSession({
     path: './data',           // Where the sessions will be stored
     name: 'i-see-you',        // [ default = 'session-id' ] Name of the cookie to create
-    maxAge: 15000,            // [ default = 30000 ] Time of session duration (in ms)
+    maxAge: 15,               // [ default = 30 ] Time of session duration (in minutes)
     algorithm: 'aes-256-ccm', // [ default = 'aes-128-ccm' ] AES algorithm do you want to use
 }));
 ```
