@@ -1,7 +1,7 @@
 import express, { json } from 'express';
 import { rmSync } from 'fs';
 
-import { suspiciousSession } from '.';
+import suspiciousSession from '.';
 const app = express();
 
 app.use(json({
@@ -14,6 +14,9 @@ app.use(suspiciousSession({
     path: './data',
     maxAge: 1 / 2,
     algorithm: 'aes-256-ccm',
+    cookieOptions: {
+        secure: false
+    }
 }));
 
 app.get('/create', async (req, res) => {

@@ -1,11 +1,12 @@
 import { Cookie, CookieManager } from '../tool/cookie-manager';
 
-import { Current, Manager, Options } from './interfaces';
+import { CookieOptions, Current, Manager } from './interfaces';
 import { CurrentSession } from './current-session';
 import { SessionQueue } from './session-queue';
 
 export class SessionManager implements Manager {
     private _cookieManager: CookieManager;
+    private _cookieOptions: CookieOptions;
     private _cookieName: string;
     private _cookie: Cookie;
 
@@ -20,8 +21,18 @@ export class SessionManager implements Manager {
         this._sessionQueue = sessionQueue;
         
         // Set cookie management
-        this._cookieManager = cookieManager;
         this._cookieName = sessionQueue.options.name;
+        this._cookieManager = cookieManager;
+        this._cookieOptions = sessionQueue.options;
+        this._cookieOptions = {
+            httpOnly: sessionQueue.options.cookieOptions?.httpOnly ?? true,
+            sameSite: sessionQueue.options.cookieOptions?.sameSite,
+            secure: sessionQueue.options.cookieOptions?.secure ?? true,
+            domain: sessionQueue.options.cookieOptions?.domain,
+            encode: sessionQueue.options.cookieOptions?.encode,
+            signed: sessionQueue.options.cookieOptions?.signed,
+            path: sessionQueue.options.cookieOptions?.path ?? '/',
+        };
 
         // Search for current cookie
         this._cookie = this._cookieManager.get(this._cookieName);
@@ -35,11 +46,7 @@ export class SessionManager implements Manager {
             } catch {
                 // Clear the current session
                 this._current = null;
-                this._cookie.kill({
-                    httpOnly: true,
-                    secure: true,
-                    path: '/'
-                });
+                this._cookie.kill(this._cookieOptions);
             }
         } else {
             // Cookie not found
@@ -74,10 +81,8 @@ export class SessionManager implements Manager {
 
         // Save the cookie
         this._cookie.save({
-            httpOnly: true,
+            ...this._cookieOptions,
             maxAge: this._current.maxAge,
-            secure: true,
-            path: '/'
         });
     }
     
@@ -90,11 +95,7 @@ export class SessionManager implements Manager {
         
         // Clear the cookie session
         if (this._cookie) {
-            this._cookie.kill({
-                httpOnly: true,
-                secure: true,
-                path: '/'
-            });
+            this._cookie.kill(this._cookieOptions);
             this._cookie = null;
         }
     }
@@ -108,10 +109,8 @@ export class SessionManager implements Manager {
         // Save the cookie
         if (this._cookie) {
             this._cookie.save({
-                httpOnly: true,
+                ...this._cookieOptions,
                 maxAge: this._current.maxAge,
-                secure: true,
-                path: '/'
             });
         }
     }

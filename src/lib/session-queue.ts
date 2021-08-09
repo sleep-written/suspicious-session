@@ -21,6 +21,7 @@ export class SessionQueue {
         if (!this._options.name) {
             this._options.name = 'session-id';
         }
+
         if (!this._options.algorithm) {
             this._options.algorithm = 'aes-128-ccm';
         }
@@ -29,6 +30,10 @@ export class SessionQueue {
             this._options.maxAge = 60000 * this._options.maxAge;
         } else {
             this._options.maxAge = 60000 * 30;
+        }
+
+        if (!this._options.cookieOptions) {
+            this._options.cookieOptions = {};
         }
 
         this._aes = new AESCrypto(this._options.algorithm);

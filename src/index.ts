@@ -1,5 +1,8 @@
 import { Manager } from './lib';
+import { suspiciousSession } from './lib';
+
 export * from './lib';
+export default suspiciousSession;
 
 declare global {
   namespace Express {

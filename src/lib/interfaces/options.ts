@@ -1,4 +1,5 @@
 import { AESAlgorithm } from '../../tool/aes-crypto/interfaces';
+import { CookieOptions } from './cookie-options';
 
 export interface Options {
     /**
@@ -25,4 +26,10 @@ export interface Options {
      * used is `"aes-128-ccm"`.
      */
     algorithm?: AESAlgorithm;
+
+    /**
+     * An optional object with a custom configuration of the cookie generated, in case if you need to
+     * set an specific parameter. 
+     */
+    cookieOptions?: CookieOptions;
 }

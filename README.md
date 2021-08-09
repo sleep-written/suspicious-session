@@ -24,6 +24,13 @@ app.use(suspiciousSession({
     name: 'i-see-you',        // [ default = 'session-id' ] Name of the cookie to create
     maxAge: 15,               // [ default = 30 ] Time of session duration (in minutes)
     algorithm: 'aes-256-ccm', // [ default = 'aes-128-ccm' ] AES algorithm do you want to use
+    
+    /** An optional object in case if you want to change the way
+     * of the library creates the cookies.
+     */
+    cookieOptions: {
+        secure: false
+    }
 }));
 ```
 
@@ -98,3 +105,111 @@ app.get('/read', async (req, res) => {
     }
 });
 ```
+
+## Configuration
+
+The configuration of the library it's simple, but quite flexible. As you see at the top, the parameters are just the necesary for simple implementations, but considerates some cases when you could need an specific behavior. The options are according to this interface:
+
+
+```ts
+export interface Options {
+    /**
+     * The path of the folder in where `session-crossover` will adds the new sessions to be created.
+     * If the folder doesn't exists, the library will be create the folder while implements the
+     * middleware in the `express` instance.
+     */
+    path: string;
+
+    /**
+     * The name of the cookie which the session's encrypted UUID will be stored in the client. By default
+     * the name it's `"session-id"`.
+     */
+    name?: string;
+
+    /**
+     * The lifetime duration (in minutes) of every session created. By default it's setted to
+     * 30 mins of duration.
+     */
+    maxAge?: number;
+
+    /**
+     * The AES-Algorithm to be used for encrypt the data and the cookie value. By default, the algorithm
+     * used is `"aes-128-ccm"`.
+     */
+    algorithm?: AESAlgorithm;
+
+    /**
+     * An optional object with a custom configuration of the cookie generated, in case if you need to
+     * set an specific parameter. 
+     */
+    cookieOptions?: CookieOptions;
+}
+```
+
+
+
+## About `this.algorithm`:
+
+This parameter tells to the library which __AES encryption__ algorithm do you want to use for encrypt the sessions. By default, use `"aes-128-ccm"`, but if you want to use another algorithm, these are the available:
+- `"aes-128-ccm"`
+- `"aes-128-gcm"`
+- `"aes-192-ccm"`
+- `"aes-192-gcm"`
+- `"aes-256-ccm"`
+- `"aes-256-gcm"`
+- `"chacha20-poly1305"`
+
+## About `this.cookieOptions`:
+
+In certain cases, it's probably that you want to create the cookies with a different settings than the default used by the library. The default values are:
+
+```ts
+const cookieOptions = {
+    httpOnly: true,
+    secure: true,
+    path: '/',
+};
+```
+
+If you want to override some values, simply you can add only the parameter do you want to change (keeping the default values intact). For example, in case when you only need to change the `"secure"` parameter to `false`, then:
+```ts
+app.use(suspiciousSession({
+    path: './data',
+    maxAge: 15,
+    cookieOptions: {
+        /**
+         * This override the default value
+         * "secure: true" to "false".
+         */
+        secure: false
+    }
+}));
+```
+
+...or in other cases when you need to add a parameter without a default value, simply you can add that value as follows:
+
+```ts
+app.use(suspiciousSession({
+    path: './data',
+    maxAge: 15,
+    cookieOptions: {
+        /**
+         * The parameter "sameSite" doesn't has a
+         * default value assigned.
+         */
+        sameSite: 'strict'
+    }
+}));
+```
+
+The available values to set are _(see the [express.js](http://expressjs.com/en/4x/api.html#res.cookie) for details)_:
+
+Property | Type                  | Description
+---------|-----------------------|------------
+domain   | `string`              | Domain name for the cookie. Defaults to the domain name of the app.
+encode   | `function`            | A synchronous function used for cookie value encoding. Defaults to `encodeURIComponent`.
+httpOnly | `boolean`             | Flags the cookie to be accessible only by the web server.
+path     | `string`              | Path for the cookie. Defaults to `"/"`.
+secure   | `boolean`             | Marks the cookie to be used with __HTTPS__ only.
+signed   | `boolean`             | Indicates if the cookie should be signed.
+sameSite | `boolean` or `string` | Value of the “SameSite” Set-Cookie attribute. More information at [here](https://tools.ietf.org/html/draft-ietf-httpbis-cookie-same-site-00#section-4.1.1)
