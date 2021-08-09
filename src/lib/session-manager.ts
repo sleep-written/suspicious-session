@@ -26,7 +26,7 @@ export class SessionManager implements Manager {
         this._cookieOptions = sessionQueue.options;
         this._cookieOptions = {
             httpOnly: sessionQueue.options.cookieOptions?.httpOnly ?? true,
-            sameSite: sessionQueue.options.cookieOptions?.sameSite,
+            sameSite: sessionQueue.options.cookieOptions?.sameSite ?? 'strict',
             secure: sessionQueue.options.cookieOptions?.secure ?? true,
             domain: sessionQueue.options.cookieOptions?.domain,
             encode: sessionQueue.options.cookieOptions?.encode,

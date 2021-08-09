@@ -166,6 +166,7 @@ In certain cases, it's probably that you want to create the cookies with a diffe
 ```ts
 const cookieOptions = {
     httpOnly: true,
+    sameSite: 'strict',
     secure: true,
     path: '/',
 };
@@ -194,10 +195,10 @@ app.use(suspiciousSession({
     maxAge: 15,
     cookieOptions: {
         /**
-         * The parameter "sameSite" doesn't has a
+         * The parameter "signed" doesn't has a
          * default value assigned.
          */
-        sameSite: 'strict'
+        signed: true
     }
 }));
 ```
