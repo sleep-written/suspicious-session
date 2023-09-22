@@ -20,7 +20,7 @@ export function suspiciousSession(options: Options): Middleware {
     // Create the folder
     try {
         accessSync(path);
-    } catch (err) {
+    } catch (err: any) {
         if (err.code === 'ENOENT') {
             mkdirSync(path);
         } else {

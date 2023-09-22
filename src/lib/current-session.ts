@@ -51,7 +51,7 @@ export class CurrentSession<T = any> implements Current<T> {
             // Check file permissions
             await fsPromises.access(this._path);
             return true;
-        } catch (err) {
+        } catch (err: any) {
             if (err.code === 'ENOENT') {
                 // Path doesn't exist
                 return false;
@@ -81,7 +81,7 @@ export class CurrentSession<T = any> implements Current<T> {
             const decr = this._aes.decrypt(iv, data);
             const text = decr.toString('utf-8');
             return JSON.parse(text);
-        } catch (err) {
+        } catch (err: any) {
             throw new FileCorruptedError(err.message);
         }
     }
@@ -101,7 +101,7 @@ export class CurrentSession<T = any> implements Current<T> {
             const encr = this._aes.encrypt(byte);
             const data = Buffer.concat([ encr.iv, encr.data ]);
             return fsPromises.writeFile(this._path, data);
-        } catch (err) {
+        } catch (err: any) {
             throw new FileCorruptedError(err.message);
         }
     }
